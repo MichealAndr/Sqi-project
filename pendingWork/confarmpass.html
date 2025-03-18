@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./signUp.css">
+    <title>Confirm Password</title>
+</head>
+<body>
+    <div class="formContainer formCon" style="display: grid; align-items: center;">
+        <div class="firstLine">
+            <h3>Create Your Account</h3>
+            <p>
+                Let's get started by creating your account.
+                To keep your account safe, we need a strong password
+            </p>
+            <form action="" class="confp" id="passwordCon">
+                <input type="email" class="email" id="displayEmail" readonly>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <div class="passwordError" id="passwordError"></div>
+                <input type="password" id="Cpassword" name="confirmPassword" placeholder="Confirm Password" required>
+                <div class="cpasswordError" id="cpasswordError"></div>
+                <button type="submit">Continue</button>
+            </form>
+            <span>For further support, you may visit the Help Center or contact our customer service team.</span>
+        </div>
+    </div>
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+        } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAL2s6PP_WPykchAKQaYr3oWGBfTNc3iAw",
+            authDomain: "shopping-mail-b45a2.firebaseapp.com",
+            projectId: "shopping-mail-b45a2",
+            storageBucket: "shopping-mail-b45a2.appspot.com",
+            messagingSenderId: "136423139432",
+            appId: "1:136423139432:web:b638d23fd53619bbd8b3dd"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Retrieve email from localStorage and display it
+     
+        // Handle form submission
+        const passwordCon = document.getElementById('passwordCon');
+        const passwordError = document.getElementById('passwordError');
+        document.getElementById('passwordCon').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent the form from submitting
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('Cpassword').value;
+
+            // validate passwords
+            if (password !== confirmPassword) {
+                passwordError.textContent = "Passwords do not match";
+                return;
+            }
+
+            if (password.length < 6){
+                passwordError.textContent = "Password must be at least 6 characters long";
+                return;
+            }
+
+            // Get email from localstorage
+            const email = localStorage.getItem('email');
+           
+            if (!email){
+                passwordError.textContent = "Email not fund start the signUp process again";
+                return;
+            }
+
+            try{
+                const userCredential = await createUserWithEmailAndPassword(auth,email,password);
+                const user = userCredential.user;
+                
+                localStorage.setItemItem('email');
+                localStorage.setItem('password', password);
+
+                window.location.href="Personal.html";
+            }catch (error){
+                 // Handle common Firebase errors
+    switch (error.code) {
+      case 'auth/email-already-in-use':
+        errorMessage.textContent = "Email already in use.";
+        break;
+      case 'auth/invalid-email':
+        errorMessage.textContent = "Invalid email address.";
+        break;
+      case 'auth/weak-password':
+        errorMessage.textContent = "Password is too weak.";
+        break;
+      default:
+        errorMessage.textContent = "An error occurred. Please try again.";
+    }
+    console.error("Error creating user:", error);
+            }    
+    });
+    </script>
+</body>
+</html>

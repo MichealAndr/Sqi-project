@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Details</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .formContainer {
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+            width: 60%;
+        }
+
+        .firstLine {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .firstLine p {
+            font-size: 18px;
+            word-spacing: 3px;
+            color: rgb(128, 128, 128);
+        }
+
+        .firstLine h2 {
+            font-weight: 500;
+        }
+
+        .formContainer form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.8rem;
+            width: 60%;
+        }
+
+        .formContainer form input {
+            width: 100%;
+            height: 55px;
+        }
+
+        .form-group .input-with-prefix {
+            display: flex;
+            width: 100%;
+            gap: 0.7rem;
+        }
+
+        .form-group {
+            width: 100%;
+        }
+
+        .input-with-prefix .prefix {
+            width: 20%;
+            height: 55px;
+        }
+
+        .input-with-prefix input {
+            width: 80%;
+            height: 55px;
+        }
+
+        button {
+            width: 100%;
+            height: 57px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 5px;
+            background-color: #3889f3;
+            color: #FFFFFF;
+        }
+
+        .formContainer input::placeholder {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        input {
+            padding: 1rem;
+            border: 1px solid #686868;
+        }
+
+        input:focus-within {
+            outline: none;
+            border: 1px solid #3889f3;
+        }
+
+        .formContainer span {
+            width: 50%;
+            display: block;
+            text-align: center;
+            line-height: 2rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="formContainer">
+        <div class="firstLine">
+            <h2>Personal details.</h2>
+            <p>We just need you to fill in some details</p>
+        </div>
+
+        <form action="" id="Personal">
+            <input type="text" name="firstName" id="firstName" placeholder="First Name">
+            <div class="firstError" id="firstError"></div>
+            <input type="text" name="lastName" id="lastName" placeholder="Last Name">
+            <div class="lastError" id="lastError"></div>
+
+            <div class="form-group">
+                <div class="input-with-prefix">
+                    <select id="country-code" class="prefix">
+                        <option value="+234">+234 (NG)</option>
+                        <option value="+1">+1 (US)</option>
+                        <option value="+44">+44 (UK)</option>
+                        <option value="+91">+91 (IN)</option>
+                    </select>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your mobile number" required>
+                    <div class="phoneError" id="phoneError"></div>
+                </div>
+            </div>
+
+            <button type="submit">Continue</button>
+        </form>
+        <span>
+            For further support, you may visit the Help Center or contact our customer service team.
+        </span>
+    </div>
+
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+        } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+        import {
+            getFirestore,
+            doc,
+            setDoc,
+        } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAL2s6PP_WPykchAKQaYr3oWGBfTNc3iAw",
+            authDomain: "shopping-mail-b45a2.firebaseapp.com",
+            projectId: "shopping-mail-b45a2",
+            storageBucket: "shopping-mail-b45a2.appspot.com",
+            messagingSenderId: "136423139432",
+            appId: "1:136423139432:web:b638d23fd53619bbd8b3dd"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Handle form submission
+        document.getElementById('Personal').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            let isValid = true;
+
+            document.getElementById('firstError').textContent = '';
+            document.getElementById('lastError').textContent = '';
+            document.getElementById('phoneError').textContent = '';
+
+            // Validate first name
+            const firstName = document.getElementById('firstName').value;
+            if (!firstName) {
+                document.getElementById('firstError').textContent = 'Please enter your first name';
+                isValid = false;
+            }
+
+            // Validate last name
+            const lastName = document.getElementById('lastName').value;
+            if (!lastName) {
+                document.getElementById('lastError').textContent = 'Please enter your last name';
+                isValid = false;
+            }
+
+            // Validate phone number
+            const phone = document.getElementById('phone').value.trim();
+            if (!phone || !/^\d{10}$/.test(phone)) {
+                document.getElementById('phoneError').textContent = 'Mobile number must be 10 digits.';
+                isValid = false;
+            }
+
+            if (!isValid) {
+                return; // Stop if validation fails
+            }
+
+            // Retrieve email and password from localStorage
+            const email = localStorage.getItem('email');
+            const password = localStorage.getItem('password');
+
+            if (!email || !password) {
+                alert('Email or password not found. Please start the signup process again.');
+                return;
+            }
+
+            try {
+                // Create a new user with email and password
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Save user details to Firestore
+                await setDoc(doc(db, "users", user.uid), {
+                    firstName: firstName,
+                    lastName: lastName,
+                    phone: phone,
+                    email: email,
+                });
+
+                alert('Registration successful!');
+                window.location.href = 'dashboard.html'; // Redirect to dashboard or confirmation page
+            } catch (error) {
+                console.error("Error creating user or saving data:", error);
+                alert("An error occurred. Please try again.");
+            }
+        });
+    </script>
+</body>
+</html>

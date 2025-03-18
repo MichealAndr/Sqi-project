@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShoppingMail</title>
+    <link rel="stylesheet" href="items.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
+</head>
+<body>
+    <div class="section">
+        <div class="container-add"></div>
+        <nav>
+           <div class="logo"><h1>JMA’s</h1></div>
+            <main>
+                <ul class="search">
+                    <input type="search"  id="search" placeholder="Search Product, Brands and Cartigories">
+                    <button class="search-btn">Search</button>
+               </ul>
+    
+               <ul class="link-line">
+                    <li><a href="#" class="account-btn">
+                              <i class="bi bi-person"></i>
+                              <span>Account</span>
+    
+                        <div class="account">
+                            <ul class="first-list">
+                               <button>
+                                   Sign In
+                               </button>
+                            </ul>
+                            <ul class="second-list">
+                            <button>
+                                <i class="bi bi-person"></i>
+                                <span>My Account</span>
+                            </button>
+                            <button id="order">
+                                <i class="bi bi-box2"></i>
+                                <span>Order</span>
+                            </button>
+                            <button>
+                                <i class="bi bi-heart"></i>
+                                <span>WishList</span>
+                            </button>
+                            </ul>
+                        </div> 
+                    </a></li>
+                    <li><a href="#" class="help-btn" id="link">
+                             <i class="bi bi-question-circle"></i> <span>Help</span>
+    
+                             <div class="help-container">
+                                <ul class="firstList">
+                                    <button>Help Center</button>
+                                    <button>Place an Order</button>
+                                    <button>Payment OPtion</button>
+                                    <button>Track an Order</button>
+                                    <button>Cancel an Order</button>
+                                    <button>Return & Refund</button>
+                                </ul>
+                                <ul class="secondList">
+                                    <button>
+                                        <i class="bi bi-chat-left-dots"></i>
+                                        <span>Live Chat</span>
+                                    </button>
+                                </ul>
+                            </div> 
+                          </a></li>
+    
+                        <li id="carticon"><a href="#" id="link" >
+                        <i class="bi bi-cart3"></i>
+                        <span>Cart</span>
+                        <p class="cart-quatity" id="cartQuatity"></p>
+                    </a>
+                </li>
+               </ul>
+            </main>
+        </nav>
+        <div class="side-menu">
+                <ul>
+    
+                    <li>
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-house-door"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-person"></i>
+                            <span>Account</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-question-circle"></i>
+                            <span>Help</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-cart3" id="cartIcon2"></i>
+                            <span>Cart</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-gear"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+    
+                </ul>
+                <input type="text" placeholder="Search Product, Brands and Cartigories">
+        </div>
+        <div style="color: red;" class="errorP" id="errorP"></div>
+        <div class="spinner-border" role="status" id="spinner">
+        <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="adverticement-two"></div>
+    
+        <div class="items"  id="items">
+            <div class="adverticement-card">
+                <h4>CARTIGORY</h4>
+                <ul>
+                    <li><a href="#">Sporting Goods</a></li>
+                    <li><a href="#">Fahion</a></li>
+                    <li><a href="#">Home & Office</a></li>
+                </ul>
+                <form action="" class="form1">
+                    <label for="">Express Delivery</label>
+                    <div class="line">
+                        <input type="checkbox" id="">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                    </div>
+                </form>
+    
+                <form action="" class="form2">
+                    <h3>Shipped From</h3>
+                    <div class="child">
+                         <input type="checkbox" name="Abroad">
+                         <label for="Abroad"> Shipping from Abroad</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="Nigeria" id="">
+                        <label for="Nigeria">Shipping from Nigeria</label>
+                    </div>
+                </form>
+    
+                <form action="" class="form3">
+                   <div class="PriceApplay">
+                    <label for="Price">Price</label>
+                    <label for="">Apply</label>
+                   </div>
+                   <input type="range" name="" id="">
+                    <div class="input">
+                        <input type="number" value="500" name="" id="">
+                        <i class="bi bi-dash"></i>
+                        <input type="text" value="1200" name="" id="">
+                    </div>
+                </form>
+                <div class="discount">
+                    <h4>Discount Percentage</h4>
+                    <div class="list">
+                        <div class="container">
+                            <input type="checkbox" name="" id="">
+                        </div>
+                        <span>50%</span>
+                        <span>or</span>
+                        <span>more</span>
+                    </div>
+                    <div class="list">
+                        <div class="container">
+                            <input type="checkbox" name="" id="">
+                        </div>
+                        <span>40%</span>
+                        <span>or</span>
+                        <span>more</span>
+                    </div>
+                    <div class="list">
+                       <div class="container">
+                        <input type="checkbox" name="" id="">
+                       </div>
+                        <span>30%</span>
+                        <span>or</span>
+                        <span>more</span>
+                    </div>
+                    <div class="list">
+                       <div class="container">
+                        <input type="checkbox" name="" id="">
+                       </div>
+                        <span>20%</span>
+                        <span>or</span>
+                        <span>more</span>
+                    </div>
+                    <div class="list">
+                      <div class="container">
+                        <input type="checkbox" name="" id="">
+                      </div>
+                        <span>10%</span>
+                        <span>or</span>
+                        <span>more</span>
+                    </div>
+                </div>
+            </div>
+            <div class="display" id="display"></div>
+        </div>
+        <div class="cart-box" id="cart-box">
+            <h2 class="card-title">Your Cart</h2>
+            <div class="cart-content" id="cart">
+              
+            </div>
+            <div class="total" id="title-total">
+                
+            </div>
+            <button class="buy-now">Buy Now</button>
+            <i class="bi bi-x cart-close" id="cart-close"></i>
+        </div>
+    </div>
+   
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- About Section -->
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>We are your one-stop shop for the latest trends in fashion, electronics, and home goods. Shop with us for quality and style.</p>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#"><i class="bi bi-house-door"></i> Home</a></li>
+                    <li><a href="#"><i class="bi bi-cart"></i> Shop</a></li>
+                    <li><a href="#"><i class="bi bi-box-seam"></i> Products</a></li>
+                    <li><a href="#"><i class="bi bi-journal-text"></i> Blog</a></li>
+                    <li><a href="#"><i class="bi bi-question-circle"></i> FAQ</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><i class="bi bi-geo-alt"></i> 123 Main St, City, Country</li>
+                    <li><i class="bi bi-telephone"></i> +123 456 7890</li>
+                    <li><i class="bi bi-envelope"></i> support@example.com</li>
+                </ul>
+            </div>
+
+            <!-- Newsletter Section -->
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter to get the latest updates and offers.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Social Media and Copyright -->
+        <div class="footer-bottom">
+            <div class="social-icons">
+                <a href="#"><i class="bi bi-facebook"></i></a>
+                <a href="#"><i class="bi bi-twitter"></i></a>
+                <a href="#"><i class="bi bi-instagram"></i></a>
+                <a href="#"><i class="bi bi-linkedin"></i></a>
+            </div>
+            <p>&copy; 2025 JMA’s Store. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+<script src="./otherfiles/javascript.js"></script>
+<script src="./otherfiles/cart.js"></script>
+</html>
