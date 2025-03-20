@@ -137,8 +137,8 @@ function decreaseQuantity(id) {
         removeItem(id); // Remove the item if quantity is 1
     }
 
-    if(item.quantity && totalItems >= 1){
-        totalItems -=1;
+    if(item.quantity && totalItems <= 1){
+        totalItems = '';
         CartQualtity.innerHTML = totalItems;
     }
 }
