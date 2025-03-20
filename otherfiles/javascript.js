@@ -18,10 +18,12 @@ fetch('https://fakestoreapi.com/products')
                         <p>${category}</p>
                         <h3>$${price}<i class="bi bi-heart"></i></h3>
                     </div>
-                <button class="cartBtn" data-id="${id}" data-title="${title}" data-price="${price}" data-image="${image}">Add to Cart</button>
+                <button class="cartBtn" id="cartDisplay" onclick="increaseQuantity()" data-id="${id}" data-title="${title}" data-price="${price}" data-image="${image}">Add to Cart</button>
                 </div>
             `;
         });
+
+       
 
         // Add event listeners to all "Add to Cart" buttons
         const addToCartButtons = document.querySelectorAll('.cartBtn');

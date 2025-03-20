@@ -3,6 +3,8 @@ const cart = document.getElementById('cart-box');
 const cartClose = document.getElementById('cart-close');
 const order = document.getElementById('order');
 const cartIcon2 = document.getElementById('cartIcon2');
+const cartTotalDisplay = document.getElementById('cartDisplay');
+
 console.log(cartClose, carticon, cartClose, cartIcon2,order);
 
 
@@ -10,6 +12,21 @@ carticon.addEventListener("click", () => cart.classList.add('active'));
 cartIcon2.addEventListener("click", () => cart.classList.add('active'));
 order.addEventListener("click", () => cart.classList.add('active'));
 cartClose.addEventListener("click", () => cart.classList.remove('active'));
+
+
+//add----------- to ---------cart------------ display
+
+let totalItems = 0;
+
+let CartQualtity = document.getElementById('cartQuatity');
+
+function  removeItem(){
+    alert('hello')
+    
+    totalItems-=1;
+    CartQualtity.innerHTML = totalItems;
+   
+}
 
 //--------------------- ADD TO CART FUNCTION-------------------------
 
@@ -103,23 +120,34 @@ function increaseQuantity(id) {
         updateCartDisplay();
         saveCartToLocalStorage(); // Save the updated cart to localStorage
     }
+
+    totalItems+= 1;
+    CartQualtity.innerHTML = totalItems;
 }
 
 // Function to decrease the quantity of an item
 function decreaseQuantity(id) {
     const item = cartItems.find((item) => item.id === id);
-    if (item && item.quantity > 1) {
+    if (item && item.quantity  > 1) {
         item.quantity -= 1;
+        totalItems-= 1;
         updateCartDisplay();
         saveCartToLocalStorage(); // Save the updated cart to localStorage
     } else {
         removeItem(id); // Remove the item if quantity is 1
+    }
+
+    if(item.quantity && totalItems >= 1){
+        totalItems -=1;
+        CartQualtity.innerHTML = totalItems;
     }
 }
 
 // Function to remove an item from the cart
 function removeItem(id) {
     cartItems = cartItems.filter((item) => item.id !== id);
+    totalItems -=1;
+    CartQualtity.innerHTML = totalItems;
     updateCartDisplay();
     saveCartToLocalStorage(); // Save the updated cart to localStorage
 }
