@@ -131,7 +131,23 @@
         }
         h1.logo{
             text-align: center;
+        }  
+
+        span a{
+            text-decoration: none;
+            font-size: 15px;
+            color: #686868;
+            transition: color 0.4s ease;
         }
+        span a:hover{
+            color: #3889f3;
+        }
+        .span{
+            color: #323;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
     </style>
     
 </head>
@@ -164,6 +180,8 @@
                     </div>
                 </a>
             </div>
+            <p id="displayError" style="color: red; text-align: center; width: 100%; margin: 0; font-size: 14px; font-weight: 500;"></p> <!-- Added for error/success messages -->
+            <span class="span">Already Have Account <i class="bi bi-question-lg"></i> <a href="./Signin.html">Please Sign In</a></span>
         </form>
         <p>For further support, you may visit the Help Center or contact our customer service team.</p>
         <h1 class="logo">JMA’s</h1>
@@ -171,98 +189,119 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
         import {
-            getFirestore,
-            collection,
-            addDoc,
+          getFirestore,
+          collection,
+          addDoc,
         } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
         import {
-            getAuth,
-            createUserWithEmailAndPassword,
-            signInWithPopup,FacebookAuthProvider,
+          getAuth,
+          createUserWithEmailAndPassword,
+          signInWithPopup,
+          FacebookAuthProvider,
         } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
-
+      
         // Your web app's Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyAL2s6PP_WPykchAKQaYr3oWGBfTNc3iAw",
-            authDomain: "shopping-mail-b45a2.firebaseapp.com",
-            projectId: "shopping-mail-b45a2",
-            storageBucket: "shopping-mail-b45a2.firebasestorage.app",
-            messagingSenderId: "136423139432",
-            appId: "1:136423139432:web:b638d23fd53619bbd8b3dd"
+          apiKey: "AIzaSyAL2s6PP_WPykchAKQaYr3oWGBfTNc3iAw",
+          authDomain: "shopping-mail-b45a2.firebaseapp.com",
+          projectId: "shopping-mail-b45a2",
+          storageBucket: "shopping-mail-b45a2.firebasestorage.app",
+          messagingSenderId: "136423139432",
+          appId: "1:136423139432:web:b638d23fd53619bbd8b3dd"
         };
-
+      
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const colRef = collection(db, "users");
         const auth = getAuth(app);
-
+      
         const signUpForm = document.getElementById("signUpForm");
         const submitBtn = document.getElementById("Btn");
-
+        const displayError = document.getElementById("displayError"); // Add an element to display errors
+      
+        // Regex for email and password validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      
         signUpForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const firstName = signUpForm.firstName.value;
-            const lastName = signUpForm.lastName.value;
-            const email = signUpForm.email.value;
-            const password = signUpForm.password.value;
-
-            try {
-                // Create user with email and password
-                const userCred = await createUserWithEmailAndPassword(auth, email, password);
-                console.log("User created:", userCred.user);
-
-                // Store additional user details in Firestore
-                const userDetails = {
-                    firstName: firstName,
-                    lastName: lastName,
-                    email: email,
-                    uid: userCred.user.uid // Store the user's UID for reference
-                };
-
-                const docRef = await addDoc(colRef, userDetails);
-                console.log("Document written with ID:", docRef.id);
-
-                // Optionally, you can redirect the user or show a success message
-                alert("User created successfully!");
-                window.location.href="Signin.html";
-            } catch (error) {
-                console.error("Error:", error.message);
-                alert("Error creating user: " + error.message);
-            }
+          e.preventDefault();
+      
+          const firstName = signUpForm.firstName.value;
+          const lastName = signUpForm.lastName.value;
+          const email = signUpForm.email.value;
+          const password = signUpForm.password.value;
+      
+          // Validate email
+          if (!emailRegex.test(email)) {
+            displayError.textContent = "Please enter a valid email address.";
+            displayError.style.color = "red";
+            return; // Stop form submission
+          }
+      
+          // Validate password
+          if (!passwordRegex.test(password)) {
+            displayError.textContent = "Password must be at least 8 characters long and include at least 1 uppercase letter, lowercase letter, number, and special character.";
+            displayError.style.color = "red";
+            return; // Stop form submission
+          }
+      
+          try {
+            // Create user with email and password
+            const userCred = await createUserWithEmailAndPassword(auth, email, password);
+            console.log("User created:", userCred.user);
+      
+            // Store additional user details in Firestore
+            const userDetails = {
+              firstName: firstName,
+              lastName: lastName,
+              email: email,
+              uid: userCred.user.uid // Store the user's UID for reference
+            };
+      
+            const docRef = await addDoc(colRef, userDetails);
+            console.log("Document written with ID:", docRef.id);
+      
+            // Optionally, you can redirect the user or show a success message
+            alert("User created successfully!");
+            window.location.href = "Signin.html";
+          } catch (error) {
+            console.error("Error:", error.message);
+            displayError.textContent = "Error creating user: " + error.message;
+            displayError.style.color = "red";
+          }
         });
-
-        
+      
         // Sign In with Facebook
         const facebookLoginBtn = document.getElementById("facebookLoginBtn");
         facebookLoginBtn.addEventListener("click", async (e) => {
-            e.preventDefault();
-
-            const provider = new FacebookAuthProvider();
-
-            try {
-                const result = await signInWithPopup(auth, provider);
-                const user = result.user;
-
-                // Store user details in Firestore
-                const userDetails = {
-                    firstName: user.displayName.split(" ")[0], // Extract first name
-                    lastName: user.displayName.split(" ")[1], // Extract last name
-                    email: user.email,
-                    uid: user.uid
-                };
-
-                const docRef = await addDoc(colRef, userDetails);
-                console.log("Document written with ID:", docRef.id);
-
-                alert("Signed in with Facebook successfully!");
-                window.location.href="Signin.html";
-            } catch (error) {
-                console.error("Error:", error.message);
-                alert("Error signing in with Facebook: " + error.message);
-            }
+          e.preventDefault();
+      
+          const provider = new FacebookAuthProvider();
+      
+          try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+      
+            // Store user details in Firestore
+            const userDetails = {
+              firstName: user.displayName.split(" ")[0], // Extract first name
+              lastName: user.displayName.split(" ")[1], // Extract last name
+              email: user.email,
+              uid: user.uid
+            };
+      
+            const docRef = await addDoc(colRef, userDetails);
+            console.log("Document written with ID:", docRef.id);
+      
+            alert("Signed in with Facebook successfully!");
+            window.location.href = "Signin.html";
+          } catch (error) {
+            console.error("Error:", error.message);
+            displayError.textContent = "Error signing in with Facebook: " + error.message;
+            displayError.style.color = "red";
+          }
         });
-    </script>
+      </script>
 </body>
 </html>

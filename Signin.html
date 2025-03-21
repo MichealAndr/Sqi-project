@@ -71,6 +71,7 @@
             padding-left: 0.7rem;
             color: gray;
             border: 2px solid #686868;
+            transition:focus-within  0.9s ease;
         }
         input::placeholder {
             font-size: 14px; /* Adjusted font size */
@@ -85,6 +86,7 @@
         input:focus-within {
             outline: none;
             border: 3px solid #3889f3;
+     
         }
         .submit button {
             width: 100%;
@@ -130,6 +132,26 @@
         h1.logo{
             text-align: center;
         }
+
+        span a{
+            text-decoration: none;
+            font-size: 15px;
+            color: #686868;
+            transition: color 0.4s ease;
+        }
+        span a:hover{
+            color: #3889f3;
+            
+        }
+        .span{
+            color: #323;
+            font-size: 16px;
+            font-weight: 550;
+            transition: color 0.4s ease;
+        }
+        span:hover{
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -155,61 +177,80 @@
                     </div>
                 </a>
             </div>
+            <p id="displayLogin" style="color: red; text-align: center; width: 100%; margin: 0; font-size: 14px; font-weight: 500;"></p> <!-- Added for error/success messages -->
+            <span>You Don't Have An Account <i class="bi bi-question-lg"></i><a href="./index.html">Please Sign Up</a></span>
+          
         </form>
         <p>For further support, you may visit the Help Center or contact our customer service team.</p>
         <h1 class="logo">JMA’s</h1>
-        <p id="displayLogin" style="color: red; text-align: center;"></p> <!-- Added for error/success messages -->
     </div>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
         import {
-            getAuth,
-            signInWithEmailAndPassword,
+          getAuth,
+          signInWithEmailAndPassword,
         } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
-
+      
         // Your web app's Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyAL2s6PP_WPykchAKQaYr3oWGBfTNc3iAw",
-            authDomain: "shopping-mail-b45a2.firebaseapp.com",
-            projectId: "shopping-mail-b45a2",
-            storageBucket: "shopping-mail-b45a2.firebasestorage.app",
-            messagingSenderId: "136423139432",
-            appId: "1:136423139432:web:b638d23fd53619bbd8b3dd"
+          apiKey: "AIzaSyAL2s6PP_WPykchAKQaYr3oWGBfTNc3iAw",
+          authDomain: "shopping-mail-b45a2.firebaseapp.com",
+          projectId: "shopping-mail-b45a2",
+          storageBucket: "shopping-mail-b45a2.firebasestorage.app",
+          messagingSenderId: "136423139432",
+          appId: "1:136423139432:web:b638d23fd53619bbd8b3dd"
         };
-
+      
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-
+      
         const signUpForm = document.getElementById("signUpForm");
         const displayLogin = document.getElementById("displayLogin");
-
+      
+        // Regex for email and password validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      
         signUpForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const email = signUpForm.email.value;
-            const password = signUpForm.password.value;
-
-            try {
-                const userCred = await signInWithEmailAndPassword(auth, email, password);
-                displayLogin.textContent = "Login successful!";
-                displayLogin.style.color = "green";
-
-                // Redirect to another page after successful login
-                setTimeout(() => {
-                    window.location.href = "./otherfiles/items.html"; 
-                    // Change to your desired URL
-                }, 2000); // Redirect after 2 seconds
-            } catch (error) { 
-                console.error("Error:", error.code);
-                if (error.code === "auth/invalid-credential") {
-                    displayLogin.textContent = "Invalid email or password.";
-                } else {
-                    displayLogin.textContent = "An error occurred. Please try again.";
-                }
-                displayLogin.style.color = "red";
+          e.preventDefault();
+      
+          const email = signUpForm.email.value;
+          const password = signUpForm.password.value;
+      
+          // Validate email
+          if (!emailRegex.test(email)) {
+            displayLogin.textContent = "Please enter a valid email address.";
+            displayLogin.style.color = "red";
+            return; // Stop form submission
+          }
+      
+          // Validate password
+          if (!passwordRegex.test(password)) {
+            displayLogin.textContent = "Password must be at least 8 characters long and include 1 uppercase letter, lowercase letter, 1 number, and 1 special character.";
+            displayLogin.style.color = "red";
+            return; // Stop form submission
+          }
+      
+          try {
+            const userCred = await signInWithEmailAndPassword(auth, email, password);
+            displayLogin.textContent = "Login successful!";
+            displayLogin.style.color = "green";
+      
+            // Redirect to another page after successful login
+            setTimeout(() => {
+              window.location.href = "./otherfiles/Items.html"; // Change to your desired URL
+            }, 2000); // Redirect after 2 seconds
+          } catch (error) {
+            console.error("Error:", error.code);
+            if (error.code === "auth/invalid-credential") {
+              displayLogin.textContent = "Invalid email or password.";
+            } else {
+              displayLogin.textContent = "An error occurred. Please try again.";
             }
+            displayLogin.style.color = "red";
+          }
         });
-    </script>
+      </script>
 </body>
 </html>
