@@ -277,3 +277,228 @@
 // //             }, 3000);
 // //         }
     
+
+
+
+
+
+// Add this at the top with other DOM element references
+let cartQuantityElement = document.getElementById('cartQuantity');
+
+// Modified addToCart function
+async function addToCart(id, title, price, image) {
+    const userCartRef = getUserCartRef();
+    if (!userCartRef) return;
+
+    const product = {
+        id: id,
+        title: title,
+        price: price,
+        image: image,
+        quantity: 1,
+    };
+
+    try {
+        const cartDoc = await getDoc(userCartRef);
+        let totalQuantity = 0;
+
+        if (cartDoc.exists()) {
+            const cartData = cartDoc.data();
+            const existingItem = cartData.items.find((item) => item.id === id);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cartData.items.push(product);
+            }
+
+            // Calculate total quantity
+            totalQuantity = cartData.items.reduce((sum, item) => sum + item.quantity, 0);
+            
+            await updateDoc(userCartRef, {
+                items: cartData.items,
+            });
+        } else {
+            totalQuantity = 1;
+            await setDoc(userCartRef, {
+                items: [product],
+            });
+        }
+
+        // Update cart quantity display
+        if (cartQuantityElement) {
+            cartQuantityElement.textContent = totalQuantity;
+            cartQuantityElement.style.display = 'block';
+        }
+
+        updateCartDisplay();
+    } catch (error) {
+        console.error("Error adding to cart:", error);
+    }
+}
+
+// Update the updateCartDisplay function to also update the cart quantity
+async function updateCartDisplay() {
+    const cart = document.getElementById('cart');
+    if (!cart) return;
+
+    const userCartRef = getUserCartRef();
+    if (!userCartRef) return;
+
+    try {
+        const cartDoc = await getDoc(userCartRef);
+        if (!cartDoc.exists()) {
+            cart.innerHTML = '<p>Your cart is empty.</p>';
+            if (cartQuantityElement) {
+                cartQuantityElement.textContent = '0';
+            }
+            return;
+        }
+
+        const cartData = cartDoc.data();
+        let totalPrice = 0;
+        let totalQuantity = 0;
+
+        cart.innerHTML = '';
+
+        cartData.items.forEach((item) => {
+            const cartItem = document.createElement('div');
+            cartItem.classList.add('cart-item');
+
+            cartItem.innerHTML = `
+                <img src="${item.image}" alt="${item.title}">
+                <div class="cartDetails">
+                    <p>${item.title}</p>
+                    <p>$${item.price}</p>
+                </div>
+                <div class="cartBtn">
+                    <button class="decrease btn" data-id="${item.id}" data-quantity="${item.quantity}">-</button>
+                    <span>${item.quantity}</span>
+                    <button class="increase btn" data-id="${item.id}" data-quantity="${item.quantity}">+</button>
+                    <button class="remove" data-id="${item.id}">Remove</button>
+                </div>
+            `;
+
+            cart.appendChild(cartItem);
+            totalPrice += item.price * item.quantity;
+            totalQuantity += item.quantity;
+        });
+
+        // Update cart quantity display
+        if (cartQuantityElement) {
+            cartQuantityElement.textContent = totalQuantity;
+            cartQuantityElement.style.display = totalQuantity > 0 ? 'block' : 'none';
+        }
+
+        // Add total price display
+        const totalPriceElement = document.createElement('div');
+        totalPriceElement.textContent = `Total: $${totalPrice.toFixed(2)}`;
+        cart.appendChild(totalPriceElement);
+
+        // Add event listeners
+        cart.querySelectorAll('.decrease').forEach(button => {
+            button.addEventListener('click', () => decreaseQuantity(button.dataset.id));
+        });
+
+        cart.querySelectorAll('.increase').forEach(button => {
+            button.addEventListener('click', () => increaseQuantity(button.dataset.id));
+        });
+
+        cart.querySelectorAll('.remove').forEach(button => {
+            button.addEventListener('click', () => removeItem(button.dataset.id));
+        });
+
+    } catch (error) {
+        console.error("Error updating cart display:", error);
+    }
+}
+
+// Update quantity adjustment functions to also update the cart quantity
+async function decreaseQuantity(itemId) {
+    const userCartRef = getUserCartRef();
+    if (!userCartRef) return;
+
+    try {
+        const cartDoc = await getDoc(userCartRef);
+        const cartData = cartDoc.data();
+        const itemIndex = cartData.items.findIndex((item) => item.id === itemId);
+
+        if (itemIndex !== -1) {
+            if (cartData.items[itemIndex].quantity > 1) {
+                cartData.items[itemIndex].quantity -= 1;
+            } else {
+                cartData.items.splice(itemIndex, 1);
+            }
+
+            await updateDoc(userCartRef, {
+                items: cartData.items,
+            });
+            
+            // Update cart quantity display
+            const totalQuantity = cartData.items.reduce((sum, item) => sum + item.quantity, 0);
+            if (cartQuantityElement) {
+                cartQuantityElement.textContent = totalQuantity;
+                cartQuantityElement.style.display = totalQuantity > 0 ? 'block' : 'none';
+            }
+            
+            updateCartDisplay();
+        }
+    } catch (error) {
+        console.error("Error decreasing quantity:", error);
+    }
+}
+
+async function increaseQuantity(itemId) {
+    const userCartRef = getUserCartRef();
+    if (!userCartRef) return;
+
+    try {
+        const cartDoc = await getDoc(userCartRef);
+        const cartData = cartDoc.data();
+        const itemIndex = cartData.items.findIndex((item) => item.id === itemId);
+
+        if (itemIndex !== -1) {
+            cartData.items[itemIndex].quantity += 1;
+            await updateDoc(userCartRef, {
+                items: cartData.items,
+            });
+            
+            // Update cart quantity display
+            const totalQuantity = cartData.items.reduce((sum, item) => sum + item.quantity, 0);
+            if (cartQuantityElement) {
+                cartQuantityElement.textContent = totalQuantity;
+                cartQuantityElement.style.display = 'block';
+            }
+            
+            updateCartDisplay();
+        }
+    } catch (error) {
+        console.error("Error increasing quantity:", error);
+    }
+}
+
+async function removeItem(itemId) {
+    const userCartRef = getUserCartRef();
+    if (!userCartRef) return;
+
+    try {
+        const cartDoc = await getDoc(userCartRef);
+        const cartData = cartDoc.data();
+        const updatedItems = cartData.items.filter((item) => item.id !== itemId);
+
+        await updateDoc(userCartRef, {
+            items: updatedItems,
+        });
+        
+        // Update cart quantity display
+        const totalQuantity = updatedItems.reduce((sum, item) => sum + item.quantity, 0);
+        if (cartQuantityElement) {
+            cartQuantityElement.textContent = totalQuantity;
+            cartQuantityElement.style.display = totalQuantity > 0 ? 'block' : 'none';
+        }
+        
+        updateCartDisplay();
+    } catch (error) {
+        console.error("Error removing item:", error);
+    }
+}

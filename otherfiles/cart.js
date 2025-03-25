@@ -15,5 +15,14 @@ order.addEventListener("click", () => cart.classList.add('active'));
 cartClose.addEventListener("click", () => cart.classList.remove('active'));
 
 
+const checkout = document.getElementById('checkOut');
+console.log(checkout);
 
+checkout.addEventListener('click', () =>{
+     // Redirect to another page after successful login
+     setTimeout(() => {
+        window.location.href = "../otherfiles/checkout.html"; // Change to your desired URL
+      }, 2000); 
+});
 
+// //Import the necessary Firebase modules
