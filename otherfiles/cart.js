@@ -22,7 +22,7 @@ cartClose.addEventListener("click", () => cart.classList.remove('active'));
 const checkout = document.getElementById('checkOut');
 console.log(checkout);
 
-const Home = document.getElementById('Home');
+const home = document.getElementById('Home');
 console.log(checkout);
 
 checkout.addEventListener('click', () =>{
@@ -32,7 +32,7 @@ checkout.addEventListener('click', () =>{
       }, 2000); 
 });
 
-  Home.addEventListener('click', () =>{
+  home.addEventListener('click', () =>{
      // Redirect to another page after successful login
      setTimeout(() => {
         window.location.href = "./landing.html"; // Change to your desired URL

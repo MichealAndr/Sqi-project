@@ -21,6 +21,7 @@ body {
     line-height: 1.6;
     color: var(--dark-color);
     background-color: #f9f9f9;
+    margin: 0;
 }
 
 .container {
@@ -32,7 +33,9 @@ body {
 }
 
 .btn {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: var(--secondary-color);
     color: white;
     padding: 10px 20px;
@@ -41,6 +44,7 @@ body {
     text-decoration: none;
     cursor: pointer;
     transition: var(--transition);
+    width: 10rem;
 }
 
 .btn:hover {
@@ -65,7 +69,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 40%;
+    width: 100%;
 }
 
 .logo {
@@ -203,7 +207,8 @@ body {
     background:url(./otherfiles/images/upscalemedia-transformed.jpeg);
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 100%;
+    background-size: cover;
+    width: 100%;
 }
 
 .hero .container {
@@ -214,17 +219,20 @@ body {
 
 .hero-content {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .hero-content h1 {
     font-size: 48px;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
     color: var(--primary-color);
 }
 
 .hero-content p {
     font-size: 18px;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
     color: #7f8c8d;
 }
 
@@ -543,9 +551,23 @@ body {
     .nav-links {
         display: none;
     }
+
+    .hero-content{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
     
     .hero-content h1 {
         font-size: 36px;
+        line-height: 3rem;
+    }
+
+    .hero-content p{
+        margin: 0;
+        text-align: center;
     }
 }
 
@@ -553,5 +575,19 @@ body {
     .modal-content {
         width: 95%;
         padding: 20px;
+    }
+
+    
+
+    .hero{
+        width: 100%;
+    }
+
+    .hero .container{
+        width: 100%;
+    }
+
+    .hero .hero-content{
+        width: 100%;
     }
 }

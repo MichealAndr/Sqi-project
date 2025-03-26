@@ -107,22 +107,7 @@
         <div class="container">
             <h2>Shop by Category</h2>
             <div class="category-grid">
-                <!-- <div class="category-card">
-                    <img src="https://via.placeholder.com/300x200" alt="Electronics">
-                    <h3>Electronics</h3>
-                    <a href="#" class="btn">Shop Now</a>
-                </div>
-                <div class="category-card">
-                    <img src="https://via.placeholder.com/300x200" alt="Fashion">
-                    <h3>Fashion</h3>
-                    <a href="#" class="btn">Shop Now</a>
-                </div>
-                <div class="category-card">
-                    <img src="https://via.placeholder.com/300x200" alt="Home & Garden">
-                    <h3>Home & Garden</h3>
-                    <a href="#" class="btn">Shop Now</a>
-                </div>
-            </div> -->
+            
         </div>
     </section>
 
@@ -287,6 +272,10 @@ console.log(checkou);
 const Home = document.getElementById('Home');
 console.log(checkou);
 
+const orders = document.getElementById('cartIcon2');
+console.log(orders);
+orders.addEventListener("click", () => cart.classList.add('active'));
+
 checkou.addEventListener('click', () =>{
      // Redirect to another page after successful login
      setTimeout(() => {
@@ -300,10 +289,8 @@ Home.addEventListener('click', () =>{
       }, 2000); 
 });
 </script>
-    <!-- <script type="module" src="https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js"></script> -->   
-<script type="module" src="../otherfiles/javascript.js"></script>
+  
+<script type="module"  src="../otherfiles/javascript.js"></script>
 <script src="./cart.js"></script>
     
 </body>
