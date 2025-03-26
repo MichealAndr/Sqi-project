@@ -169,7 +169,7 @@ nav main .search-btn{
     display: flex;
     flex-direction: column;
     position: fixed;
-    top: 12.5%;
+    top: 10.5%;
     right: -100%;
     width: 370px;
     height: 90%;
