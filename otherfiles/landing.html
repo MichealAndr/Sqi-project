@@ -83,7 +83,7 @@
             <div class="hero-content">
                 <h1 style="color: #fff;">Premium Shopping Experience</h1>
                 <p style="color: #020202; font-weight: 500;">Discover the best deals on high-quality products</p>
-                <a href="#featured" class="btn">Shop Now</a>
+                <a href="#featured" class="btn" id="shopBtn">Shop Now</a>
             </div>
             <div class="hero-image">
                 <!-- <img src="./images/upscalemedia-transformed.jpeg"> -->
@@ -276,6 +276,14 @@ const orders = document.getElementById('cartIcon2');
 console.log(orders);
 orders.addEventListener("click", () => cart.classList.add('active'));
 
+const shopNow = document.getElementById('shopBtn');
+console.log(shopNow);
+shopNow.addEventListener('click', ()=>{
+    setTimeout(() => {
+        window.location.href = "./Items.html"; // Change to your desired URL
+      }, 2000); 
+});
+
 checkou.addEventListener('click', () =>{
      // Redirect to another page after successful login
      setTimeout(() => {
@@ -294,5 +302,4 @@ Home.addEventListener('click', () =>{
 <script src="./cart.js"></script>
     
 </body>
-<a href="></a>
 </html>
